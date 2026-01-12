@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Smart Web Health Monitor | Winter Project</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a33;
+      --muted:#9fb2d6;
+      --text:#eaf0ff;
+      --accent:#4cc9f0;
+      --accent2:#80ffdb;
+      --border:rgba(255,255,255,.10);
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(76,201,240,.20), transparent 60%),
+                  radial-gradient(900px 500px at 100% 10%, rgba(128,255,219,.14), transparent 55%),
+                  linear-gradient(180deg, #070b16, var(--bg));
+      color:var(--text);
+      line-height:1.6;
+    }
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.65);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:14px 24px;
+      max-width:1100px; margin:0 auto;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:38px;height:38px;border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 25px rgba(76,201,240,.25);
+      position:relative;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:10px;
+      border-radius:10px;
+      background: rgba(11,18,32,.55);
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .navlinks{
+      display:flex; gap:14px; flex-wrap:wrap;
+      font-size:14px; color:var(--muted);
+    }
+    .navlinks a{
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid transparent;
+    }
+    .navlinks a:hover{
+      color:var(--text);
+      border-color: var(--border);
+      background: rgba(255,255,255,.04);
+    }
+
+    .hero{
+      padding:34px 0 10px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 920px){
+      .hero-grid{grid-template-columns:1fr}
+    }
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero-main{padding:26px 24px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--border);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .title{
+      margin:14px 0 10px;
+      font-size:36px; line-height:1.15;
+      letter-spacing:-.6px;
+    }
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+    }
+    .badges{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .badge{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+    }
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:600;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(76,201,240,.95), rgba(128,255,219,.85));
+      color:#081020;
+      border-color: transparent;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn:active{transform: translateY(0px)}
+    .hero-side{
+      padding:18px;
+      display:grid;
+      gap:14px;
+    }
+    .mini{
+      background: rgba(15,26,51,.70);
+      border:1px solid var(--border);
+      border-radius: 16px;
+      padding:14px;
+    }
+    .mini h4{margin:0 0 6px}
+    .mini p{margin:0;color:var(--muted);font-size:14px}
+    .kpi{
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 520px){
+      .kpi{grid-template-columns:1fr}
+    }
+    .kpi .mini{padding:12px}
+    .num{
+      font-size:20px; font-weight:800; margin:0;
+      letter-spacing:-.3px;
+    }
+
+    section{padding:18px 0}
+    .section-title{
+      display:flex; align-items:end; justify-content:space-between; gap:12px;
+      margin:10px 0 10px;
+    }
+    .section-title h2{
+      margin:0; font-size:22px;
+      letter-spacing:-.2px;
+    }
+    .section-title span{
+      color:var(--muted); font-size:13px;
+    }
+    .grid{
+      display:grid; gap:14px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .card{
+      grid-column: span 6;
+      background: rgba(15,26,51,.60);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding:18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+    }
+    .card h3{margin:0 0 8px; font-size:16px}
+    .card p{margin:0; color:var(--muted); font-size:14px}
+    .card ul{margin:10px 0 0; padding-left:18px; color:var(--muted); font-size:14px}
+    .card li{margin:6px 0}
+    @media (max-width: 920px){
+      .card{grid-column: span 12;}
+    }
+
+    .two-col{
+      display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+    }
+    @media (max-width: 920px){
+      .two-col{grid-template-columns:1fr}
+    }
+
+    .rtl{
+      direction: rtl;
+      text-align:right;
+      font-family: "Noto Naskh Arabic", "Noto Sans Arabic", Tahoma, Arial, sans-serif;
+    }
+
+    .divider{
+      height:1px; background: var(--border);
+      margin:14px 0;
+    }
+
+    .footer{
+      padding:20px 0 30px;
+      color:var(--muted);
+      font-size:13px;
+      border-top: 1px solid var(--border);
+      margin-top:16px;
+    }
+    .tag{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--muted); font-size:12px;
+    }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      color: #d8f3dc;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px">Winter Holiday Project</div>
+          <div style="font-size:12px;color:var(--muted)">AI for Daily Life • Alshahama School C2&C3</div>
+        </div>
+      </div>
+
+      <nav class="navlinks">
+        <a href="#overview">Overview</a>
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#aiuse">AI Use</a>
+        <a href="#carl">CARL</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero" id="overview">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <div class="hero-main">
+            <div class="pill">✅ Category: <strong style="color:var(--text)">Medical / الصحة</strong></div>
+            <h1 class="title">AI Smart Web Health Monitor</h1>
+            <p class="subtitle">
+              An AI-based system for patient monitoring that analyzes vital signs and sends alerts for abnormal readings.
+              <br/>
+              نظام ذكي لمراقبة صحة المرضى وتحليل المؤشرات الحيوية وإرسال تنبيهات عند الخطر.
+            </p>
+
+            <div class="badges">
+              <span class="badge">Real-life Problem</span>
+              <span class="badge">Web Dashboard</span>
+              <span class="badge">AI Analysis</span>
+              <span class="badge">Automatic Alerts</span>
+            </div>
+
+            <div class="actions">
+              <a class="btn primary" href="#solution">View Solution</a>
+              <a class="btn" href="#carl">Read Reflection</a>
+            </div>
+
+            <div class="divider"></div>
+            <div class="tag">Submission: <strong style="color:var(--text)">14 / 1 / 2026</strong></div>
+          </div>
+        </div>
+
+        <div class="hero-card hero-side">
+          <div class="mini">
+            <h4 style="margin:0 0 6px">Quick Summary</h4>
+            <p>
+              The system monitors <b>heart rate</b>, <b>temperature</b>, and <b>blood pressure</b>,
+              then uses AI to detect patterns and risks early.
+            </p>
+          </div>
+
+          <div class="kpi">
+            <div class="mini">
+              <p class="num">3+</p>
+              <p>Vital Signs Tracked</p>
+            </div>
+            <div class="mini">
+              <p class="num">AI</p>
+              <p>Risk Detection</p>
+            </div>
+            <div class="mini">
+              <p class="num">24/7</p>
+              <p>Monitoring Idea</p>
+            </div>
+          </div>
+
+          <div class="mini rtl">
+            <h4>فكرة المشروع</h4>
+            <p>
+              نراقب بيانات المريض الصحية بشكل مستمر، والذكاء الاصطناعي يحلل القراءات ويكشف التغيرات غير الطبيعية
+              ويرسل تنبيه بسرعة.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section id="problem">
+      <div class="section-title">
+        <h2>3) Problem Statement | مشكلة المشروع</h2>
+        <span>What problem are we solving?</span>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>English</h3>
+          <p>
+            Many patients—especially elderly people and those with chronic diseases—need continuous monitoring.
+            Doctors cannot monitor patients all the time, and patients may not notice dangerous changes early.
+            This can lead to serious health problems.
+          </p>
+        </div>
+
+        <div class="card rtl">
+          <h3>العربي</h3>
+          <p>
+            يحتاج الكثير من المرضى، خاصة كبار السن ومرضى الأمراض المزمنة، إلى متابعة مستمرة.
+            لا يستطيع الأطباء مراقبة المرضى طوال الوقت، وقد لا يلاحظ المريض التغيرات الخطيرة مبكرًا،
+            مما قد يؤدي إلى مشاكل صحية خطيرة.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTION -->
+    <section id="solution">
+      <div class="section-title">
+        <h2>4) Problem Solution | حل المشكلة</h2>
+        <span>How AI helps</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>How it works (English)</h3>
+          <ul>
+            <li>Sensors collect vital signs (heart rate, temperature, blood pressure).</li>
+            <li>Data is sent to a web dashboard.</li>
+            <li>AI analyzes the data to detect abnormal patterns.</li>
+            <li>If a risk is detected, an alert is sent to the patient/doctor.</li>
+          </ul>
+        </div>
+
+        <div class="card rtl">
+          <h3>كيف يعمل (العربي)</h3>
+          <ul>
+            <li>المستشعرات تجمع المؤشرات الحيوية (نبض، حرارة، ضغط).</li>
+            <li>إرسال البيانات إلى لوحة تحكم عبر الويب.</li>
+            <li>الذكاء الاصطناعي يحلل البيانات ويكشف القراءات غير الطبيعية.</li>
+            <li>عند وجود خطر: يتم إرسال تنبيه للمريض/الطبيب.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="grid-column: span 12;">
+          <h3>System Flow (simple)</h3>
+          <p style="margin-top:8px">
+            <code>Sensor Data → Web Dashboard → AI Analysis → Alert (Doctor/Patient)</code>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI USE -->
+    <section id="aiuse">
+      <div class="section-title">
+        <h2>Proof of AI Use | إثبات استخدام الذكاء الاصطناعي</h2>
+        <span>What makes it AI?</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>AI Features</h3>
+          <ul>
+            <li>Pattern detection (normal vs abnormal readings).</li>
+            <li>Risk prediction based on previous data.</li>
+            <li>Automatic alert decisions.</li>
+            <li>Learning from data over time (machine learning concept).</li>
+          </ul>
+        </div>
+
+        <div class="card rtl">
+          <h3>مميزات الذكاء الاصطناعي</h3>
+          <ul>
+            <li>اكتشاف الأنماط (قراءات طبيعية/غير طبيعية).</li>
+            <li>التنبؤ بالمخاطر بناءً على بيانات سابقة.</li>
+            <li>إرسال تنبيهات تلقائية عند وجود مشكلة.</li>
+            <li>فكرة التعلم من البيانات مع الوقت (تعلم آلي).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- DRAFT + FINAL -->
+    <section id="draftfinal">
+      <div class="section-title">
+        <h2>Draft Design & Final Product | المسودة والمنتج النهائي</h2>
+        <span>Prototype idea</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Draft Design (English)</h3>
+          <p>
+            A first design of a web dashboard that shows real-time health data.
+            The system collects data from sensors and sends it to the AI model for analysis.
+          </p>
+        </div>
+
+        <div class="card rtl">
+          <h3>المسودة الأولى</h3>
+          <p>
+            لوحة تحكم على الويب تعرض بيانات المريض بشكل مباشر.
+            يتم جمع البيانات من المستشعرات وإرسالها لنموذج الذكاء الاصطناعي لتحليلها.
+          </p>
+        </div>
+
+        <div class="card" style="grid-column: span 12;">
+          <h3>Final Product (English + Arabic)</h3>
+          <p>
+            A smart web-based health monitoring system that displays health data, analyzes it using AI,
+            and sends alerts to doctors or patients when health risks are detected.
+          </p>
+          <p class="rtl" style="margin-top:10px">
+            نظام ذكي لمراقبة الصحة عبر الويب يعرض البيانات، ويحللها بالذكاء الاصطناعي،
+            ويرسل تنبيهات للطبيب أو المريض عند اكتشاف أي خطر صحي.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section id="impact">
+      <div class="section-title">
+        <h2>Results & Impact | النتائج والأثر</h2>
+        <span>Real-world benefit</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Results (English)</h3>
+          <ul>
+            <li>Early detection of health problems.</li>
+            <li>Reduced unnecessary hospital visits.</li>
+            <li>Better patient safety and faster response.</li>
+            <li>Improved healthcare quality.</li>
+          </ul>
+        </div>
+
+        <div class="card rtl">
+          <h3>النتائج</h3>
+          <ul>
+            <li>اكتشاف مبكر للمشاكل الصحية.</li>
+            <li>تقليل الزيارات غير الضرورية للمستشفى.</li>
+            <li>رفع أمان المريض والاستجابة بشكل أسرع.</li>
+            <li>تحسين جودة الرعاية الصحية.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARL -->
+    <section id="carl">
+      <div class="section-title">
+        <h2>CARL Reflection | انعكاس CARL</h2>
+        <span>Context • Action • Result • Learning</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>C – Context</h3>
+          <p>
+            This project focused on using AI to solve a real-life health monitoring problem.
+            My role was to design an AI system that helps monitor patient health.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>A – Action</h3>
+          <p>
+            I researched health monitoring systems, chose the medical category, and designed an AI-based solution.
+            I planned how the system collects, analyzes data, and sends alerts.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>R – Result</h3>
+          <p>
+            The outcome was a clear idea for a smart health monitor that can help patients and doctors
+            detect health problems early and respond faster.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>L – Learning</h3>
+          <p>
+            I learned how AI can be used in healthcare to improve safety and quality of life.
+            Next time, I would add more features like a patient history chart and a simple risk score.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+        <div>
+          <b>AI Smart Web Health Monitor</b> • Winter Holiday Project • Alshahama School C2 & C3
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="tag">Category: Medical</span>
+          <span class="tag">AI for Daily Life</span>
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        Tip: Add your <b>Student Name</b>, <b>Grade</b>, and <b>Teacher</b> at the top if your school requires it.
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Smooth scroll for nav links (nice touch)
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+  </script>
+</body>
+</html>
